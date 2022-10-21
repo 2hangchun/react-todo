@@ -9,6 +9,9 @@ import EditForm from "./components/EditForm/EditForm";
 import TaskList from "./components/TaskList/TaskList";
 import ThemeSwitcher from "./components/ThemeSwitcher/ThemeSwitcher";
 
+// context
+import Context from "./context/Context";
+
 function App() {
   const [tasks, setTasks] = useLocalStorage("react-todo.tasks", []);
   const [editedTask, setEditedTask] = useState(null);
@@ -31,12 +34,10 @@ function App() {
     setTasks((prevState) =>
       prevState.map((t) => (t.id === task.id ? { ...t, name: task.name } : t))
     );
-    // TODO: close the edit mode
     closeEditMode();
   };
   const closeEditMode = () => {
     setIsEditing(false);
-    // TODO: previous state focus
     previousFocusEl.focus();
   };
   const enterEditMode = (task) => {
@@ -45,26 +46,32 @@ function App() {
     setPreviousFocusEl(document.activeElement);
   };
   return (
-    <div className="container">
-      <h1>My Task List</h1>
-      {isEditing && (
-        <EditForm
-          editedTask={editedTask}
-          updateTask={updateTask}
-          closeEditMode={closeEditMode}
-        />
-      )}
-      <CustomForm addTask={addTask} />
-      {tasks && (
-        <TaskList
-          tasks={tasks}
-          deleteTask={deleteTask}
-          toggleTask={toggleTask}
-          enterEditMode={enterEditMode}
-        />
-      )}
-      <ThemeSwitcher />
-    </div>
+    <Context
+      deleteTask={deleteTask}
+      toggleTask={toggleTask}
+      enterEditMode={enterEditMode}
+    >
+      <div className="container">
+        <h1>My Task List</h1>
+        {isEditing && (
+          <EditForm
+            editedTask={editedTask}
+            updateTask={updateTask}
+            closeEditMode={closeEditMode}
+          />
+        )}
+        <CustomForm addTask={addTask} />
+        {tasks && (
+          <TaskList
+            tasks={tasks}
+            deleteTask={deleteTask}
+            toggleTask={toggleTask}
+            enterEditMode={enterEditMode}
+          />
+        )}
+        <ThemeSwitcher />
+      </div>
+    </Context>
   );
 }
 

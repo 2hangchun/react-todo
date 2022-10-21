@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 // styles
 import styles from "../style.module.css";
@@ -6,7 +6,15 @@ import styles from "../style.module.css";
 // library imports
 import { CheckIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-const TaskItem = ({ task, deleteTask, toggleTask, enterEditMode }) => {
+// context
+import { DeleteTaskContext } from "../../context/DeleteTaskContext";
+import { EnterEditModeContext } from "../../context/EnterEditModeContext";
+import { ToggleTaskContext } from "../../context/ToggleTaskContext";
+
+const TaskItem = ({ task }) => {
+  const deleteTask = useContext(DeleteTaskContext);
+  const toggleTask = useContext(ToggleTaskContext);
+  const enterEditMode = useContext(EnterEditModeContext);
   const [isChecked, setIsChecked] = useState(task.checked);
   const handelCheckboxChange = (e) => {
     setIsChecked(!isChecked);
