@@ -3,12 +3,16 @@ import { useState } from "react";
 // library imports
 import { PlusIcon } from "@heroicons/react/24/solid";
 
-const CustomForm = ({ addTask }) => {
+// store
+import { tasksStore } from "../../store/TasksStore";
+import { observer } from "mobx-react-lite";
+
+const CustomForm = () => {
   const [task, setTask] = useState("");
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setTask("");
-    addTask({
+    tasksStore.addTask({
       name: task,
       checked: false,
       id: Date.now(),
@@ -41,4 +45,4 @@ const CustomForm = ({ addTask }) => {
   );
 };
 
-export default CustomForm;
+export default observer(CustomForm);

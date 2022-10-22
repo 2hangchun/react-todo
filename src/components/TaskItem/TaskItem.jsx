@@ -6,11 +6,15 @@ import styles from "../style.module.css";
 // library imports
 import { CheckIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 
-const TaskItem = ({ task, deleteTask, toggleTask, enterEditMode }) => {
+// store
+import { tasksStore } from "../../store/TasksStore";
+import { observer } from "mobx-react-lite";
+
+const TaskItem = ({ task, enterEditMode }) => {
   const [isChecked, setIsChecked] = useState(task.checked);
   const handelCheckboxChange = (e) => {
     setIsChecked(!isChecked);
-    toggleTask(task.id);
+    tasksStore.toggleTask(task.id);
   };
   return (
     <li className={styles.task}>
@@ -41,7 +45,7 @@ const TaskItem = ({ task, deleteTask, toggleTask, enterEditMode }) => {
         <button
           className={`btn ${styles.delete}`}
           aria-label={`Delete ${task.name} Task`}
-          onClick={() => deleteTask(task.id)}
+          onClick={() => tasksStore.deleteTask(task.id)}
         >
           <TrashIcon width={24} height={24} />
         </button>
@@ -50,4 +54,4 @@ const TaskItem = ({ task, deleteTask, toggleTask, enterEditMode }) => {
   );
 };
 
-export default TaskItem;
+export default observer(TaskItem);

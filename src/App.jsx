@@ -9,8 +9,11 @@ import EditForm from "./components/EditForm/EditForm";
 import TaskList from "./components/TaskList/TaskList";
 import ThemeSwitcher from "./components/ThemeSwitcher/ThemeSwitcher";
 
+// store
+import { tasksStore } from "./store/TasksStore";
+import { observer } from "mobx-react-lite";
+
 function App() {
-  const [tasks, setTasks] = useLocalStorage("react-todo.tasks", []);
   const [editedTask, setEditedTask] = useState(null);
   const [previousFocusEl, setPreviousFocusEl] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -48,24 +51,13 @@ function App() {
     <div className="container">
       <h1>My Task List</h1>
       {isEditing && (
-        <EditForm
-          editedTask={editedTask}
-          updateTask={updateTask}
-          closeEditMode={closeEditMode}
-        />
+        <EditForm editedTask={editedTask} closeEditMode={closeEditMode} />
       )}
       <CustomForm addTask={addTask} />
-      {tasks && (
-        <TaskList
-          tasks={tasks}
-          deleteTask={deleteTask}
-          toggleTask={toggleTask}
-          enterEditMode={enterEditMode}
-        />
-      )}
+      {tasksStore.tasks && <TaskList enterEditMode={enterEditMode} />}
       <ThemeSwitcher />
     </div>
   );
 }
 
-export default App;
+export default observer(App);

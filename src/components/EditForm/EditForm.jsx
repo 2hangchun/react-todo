@@ -3,11 +3,16 @@ import React, { useState } from "react";
 import { CheckIcon } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 
-const EditForm = ({ editedTask, updateTask, closeEditMode }) => {
+// store
+import { tasksStore } from "../../store/TasksStore";
+import { observer } from "mobx-react-lite";
+
+const EditForm = ({ editedTask, closeEditMode }) => {
   const [updatedTaskName, setUpdatedTaskName] = useState(editedTask.name);
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    updateTask(editedTask);
+    tasksStore.updateTask({ ...editedTask, name: updatedTaskName });
+    closeEditMode();
   };
   useEffect(() => {
     const closeModalIfEscaped = (e) => {
@@ -45,7 +50,6 @@ const EditForm = ({ editedTask, updateTask, closeEditMode }) => {
           className="btn"
           aria-label={`Config edited task to now need ${updatedTaskName}`}
           type="submit"
-          onClick={() => updateTask({ ...editedTask, name: updatedTaskName })}
         >
           <CheckIcon strokeWidth={2} width={24} height={24} />
         </button>
@@ -54,4 +58,4 @@ const EditForm = ({ editedTask, updateTask, closeEditMode }) => {
   );
 };
 
-export default EditForm;
+export default observer(EditForm);

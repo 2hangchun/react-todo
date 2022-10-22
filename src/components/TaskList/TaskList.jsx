@@ -1,25 +1,24 @@
 import TaskItem from "../TaskItem/TaskItem";
 
+// style
 import styles from "../style.module.css";
 
-const TaskList = ({ tasks, deleteTask, toggleTask, enterEditMode }) => {
+// store
+import { tasksStore } from "../../store/TasksStore";
+import { observer } from "mobx-react-lite";
+
+const TaskList = ({ enterEditMode }) => {
   return (
     <ul className={styles.tasks}>
-      {[...tasks]
+      {[...tasksStore.tasks]
         .sort((a, b) => b.id - a.id)
         .map((task) => {
           return (
-            <TaskItem
-              key={task.id}
-              task={task}
-              deleteTask={deleteTask}
-              toggleTask={toggleTask}
-              enterEditMode={enterEditMode}
-            />
+            <TaskItem key={task.id} task={task} enterEditMode={enterEditMode} />
           );
         })}
     </ul>
   );
 };
 
-export default TaskList;
+export default observer(TaskList);
