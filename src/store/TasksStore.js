@@ -1,9 +1,22 @@
 import { atom } from 'recoil'
 
+const localStorageEffect = key => ({ setSelf, onSet }) => {
+    const savedValue = localStorage.getItem(key)
+    if (savedValue != null) {
+        setSelf(JSON.parse(savedValue));
+    }
+
+    onSet(newValue => {
+        localStorage.setItem(key, JSON.stringify(newValue))
+    });
+}
 
 export const tasksState = atom({
     key: 'tasksState',
-    default: []
+    default: [],
+    effects_UNSTABLE: [
+        localStorageEffect('react-todo.tasks')
+    ],
 })
 
 export const addTask = (tasks, task) => {
@@ -20,6 +33,6 @@ export const toggleTask = (tasks, id) => {
 }
 
 export const updateTask = (tasks, task) => {
-    console.log(task)
-    tasks.map(t => t.id === task.id ? t.name = task.name : t)
+    console.log(task);
+    return tasks.map(t => t.id === task.id ? { ...t, name: task.name } : t)
 }

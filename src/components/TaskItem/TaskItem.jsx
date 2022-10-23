@@ -8,7 +8,7 @@ import { CheckIcon, PencilIcon, TrashIcon } from "@heroicons/react/24/outline";
 import { useSetRecoilState } from "recoil";
 
 // recoil state
-import { tasksState, toggleTask } from "../../store/TasksStore";
+import { tasksState, toggleTask, deleteTask } from "../../store/TasksStore";
 
 const TaskItem = ({ task, enterEditMode }) => {
   const [isChecked, setIsChecked] = useState(task.checked);
