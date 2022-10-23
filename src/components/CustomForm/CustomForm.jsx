@@ -2,21 +2,24 @@ import { useState } from "react";
 
 // library imports
 import { PlusIcon } from "@heroicons/react/24/solid";
+import { useSetRecoilState } from "recoil";
 
-// store
-import { tasksStore } from "../../store/TasksStore";
-import { observer } from "mobx-react-lite";
+// recoil state
+import { tasksState, addTask } from "../../store/TasksStore";
 
 const CustomForm = () => {
   const [task, setTask] = useState("");
+  const setTasks = useSetRecoilState(tasksState);
   const handleFormSubmit = (e) => {
     e.preventDefault();
     setTask("");
-    tasksStore.addTask({
-      name: task,
-      checked: false,
-      id: Date.now(),
-    });
+    setTasks((prevState) =>
+      addTask(prevState, {
+        name: task,
+        checked: false,
+        id: Date.now(),
+      })
+    );
   };
   return (
     <div>
@@ -45,4 +48,4 @@ const CustomForm = () => {
   );
 };
 
-export default observer(CustomForm);
+export default CustomForm;

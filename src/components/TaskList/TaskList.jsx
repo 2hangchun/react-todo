@@ -3,14 +3,17 @@ import TaskItem from "../TaskItem/TaskItem";
 // style
 import styles from "../style.module.css";
 
-// store
-import { tasksStore } from "../../store/TasksStore";
-import { observer } from "mobx-react-lite";
+// library import
+import { useRecoilValue } from "recoil";
+
+// recoil state
+import { tasksState } from "../../store/TasksStore";
 
 const TaskList = ({ enterEditMode }) => {
+  const tasks = useRecoilValue(tasksState);
   return (
     <ul className={styles.tasks}>
-      {[...tasksStore.tasks]
+      {[...tasks]
         .sort((a, b) => b.id - a.id)
         .map((task) => {
           return (
@@ -21,4 +24,4 @@ const TaskList = ({ enterEditMode }) => {
   );
 };
 
-export default observer(TaskList);
+export default TaskList;

@@ -2,16 +2,19 @@ import React, { useState } from "react";
 
 import { CheckIcon } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
 
-// store
-import { tasksStore } from "../../store/TasksStore";
-import { observer } from "mobx-react-lite";
+// recoil state
+import { updateTask, tasksState } from "../../store/TasksStore";
 
 const EditForm = ({ editedTask, closeEditMode }) => {
   const [updatedTaskName, setUpdatedTaskName] = useState(editedTask.name);
+  const setTasks = useSetRecoilState(tasksState);
   const handleFormSubmit = (e) => {
     e.preventDefault();
-    tasksStore.updateTask({ ...editedTask, name: updatedTaskName });
+    setTasks((prevState) =>
+      updateTask(prevState, { ...editedTask, name: updatedTaskName })
+    );
     closeEditMode();
   };
   useEffect(() => {
@@ -58,4 +61,4 @@ const EditForm = ({ editedTask, closeEditMode }) => {
   );
 };
 
-export default observer(EditForm);
+export default EditForm;
